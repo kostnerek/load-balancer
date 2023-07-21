@@ -1,0 +1,62 @@
+
+version: "3.8"
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80" # Expose the load balancer on port 80
+    networks:
+      - my-network
+    depends_on:
+      
+      - backend0
+      
+      - backend1
+      
+      - backend2
+      
+
+
+  backend0:
+    container_name: backend0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3000" # Expose the backend service on port 3000 for the load balancer
+    networks:
+      - my-network
+
+  backend1:
+    container_name: backend1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3000" # Expose the backend service on port 3000 for the load balancer
+    networks:
+      - my-network
+
+  backend2:
+    container_name: backend2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3000" # Expose the backend service on port 3000 for the load balancer
+    networks:
+      - my-network
+
+networks:
+  my-network: # Create a custom network to allow communication between containers
+    driver: bridge
